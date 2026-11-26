@@ -1,17 +1,23 @@
--- Startproducten van SML. Voer uit na schema.sql.
-insert into categories (name) values
-  ('T-shirts'),('Truien'),('Broeken'),('Jassen'),('Accessoires');
+-- Startcatalogus voor SML. Voer uit na schema.sql. Pas voorraad en prijzen aan vóór live verkoop.
+insert into public.categories (name) values
+  ('T-shirts'),('Truien'),('Broeken'),('Jassen'),('Accessoires')
+on conflict (name) do nothing;
 
-insert into products (category_id, name, description, price_cents, color, badge) values
-  ((select id from categories where name='T-shirts'),'Heavy Tee','300 g/m² katoen, boxy fit',3900,'#101319','Bestseller'),
-  ((select id from categories where name='T-shirts'),'Heavy Tee Kobalt','300 g/m² katoen, boxy fit, kobalt',3900,'#2a45ff',null),
-  ((select id from categories where name='Truien'),'Studio Hoodie','450 g/m² fleece, dubbele capuchon',8900,'#4a5058','Nieuw'),
-  ((select id from categories where name='Broeken'),'Tapered Pants','Stretch twill, tapered pasvorm',9900,'#1c2430',null),
-  ((select id from categories where name='Broeken'),'Cargo Pants','Ripstop katoen, zes zakken',11900,'#7a7f6e',null),
-  ((select id from categories where name='Jassen'),'Coach Jacket','Waterafstotende nylon, drukknopen',13900,'#101319','Nieuw'),
-  ((select id from categories where name='Broeken'),'Court Shorts','Gewassen katoen, boven de knie',5900,'#c9ccd0',null),
-  ((select id from categories where name='Accessoires'),'Logo Cap','Gewassen katoen, verstelbaar',2900,'#101319',null);
+insert into public.products (category_id,name,description,price_cents,product_type,color,badge) values
+  ((select id from public.categories where name='T-shirts'),'Heavy Tee','300 g/m² katoen · Boxy fit met brede schouder · Gemaakt voor dagelijks gebruik',3900,'tee','#353c33','Bestseller'),
+  ((select id from public.categories where name='T-shirts'),'Heavy Tee Kobalt','300 g/m² katoen · Boxy fit · Kobaltblauw',3900,'tee','#435b7d',null),
+  ((select id from public.categories where name='Truien'),'Studio Hoodie','450 g/m² fleece · Dubbele capuchon · Zachte binnenkant',8900,'hoodie','#73756c','Nieuw'),
+  ((select id from public.categories where name='Broeken'),'Tapered Pants','Stretch twill · Tapered pasvorm · Elastische tailleband',9900,'pants','#41483f',null),
+  ((select id from public.categories where name='Broeken'),'Cargo Pants','Ripstop katoen · Ruime cargozakken · Verstelbare enkelband',11900,'pants','#777a66',null),
+  ((select id from public.categories where name='Jassen'),'Coach Jacket','Lichtgewicht buitenlaag · Drukknopen · Relaxed fit',13900,'jacket','#333934','Nieuw'),
+  ((select id from public.categories where name='Broeken'),'Court Shorts','Gewassen katoen · Lengte boven de knie · Twee steekzakken',5900,'shorts','#bab9ad',null),
+  ((select id from public.categories where name='Accessoires'),'Logo Cap','Gewassen katoen · Verstelbare sluiting · Subtiel SML-logo',2900,'cap','#333934',null)
+on conflict (name) do update set category_id=excluded.category_id,description=excluded.description,
+  price_cents=excluded.price_cents,product_type=excluded.product_type,color=excluded.color,badge=excluded.badge;
 
--- 20 stuks per maat als startvoorraad
-insert into product_variants (product_id, size, stock)
-select p.id, s.size, 20 from products p cross join (values ('S'),('M'),('L'),('XL')) as s(size);
+-- Startvoorraad voor demonstratie. Controleer en wijzig deze aantallen vóór je de winkel opent.
+insert into public.product_variants (product_id,size,stock)
+select p.id,s.size,20 from public.products p
+cross join lateral unnest(case when p.product_type='cap' then array['One size'] else array['S','M','L','XL'] end) as s(size)
+where p.active
+on conflict (product_id,size) do nothing;
