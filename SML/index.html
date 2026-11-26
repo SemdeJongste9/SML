@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SML – Herenmode</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="bar">
+  <a class="logo" href="#top" aria-label="SML startpagina">SML</a>
+  <nav><a class="l" href="#shop">Collectie</a><a class="l" href="#over">Over SML</a><button class="cartbtn" id="openCart">Winkelmand (<span id="cnt">0</span>)</button></nav>
+</header>
+<main id="top">
+<section class="hero">
+  <h1><span>SML</span><span>Menswear</span></h1>
+  <div>
+    <p>Herenkleding met een zware stof, een strakke pasvorm en geen overbodige print. Elk stuk in S tot XL.</p>
+    <a class="btn" href="#shop">Bekijk de collectie</a>
+  </div>
+</section>
+<section class="shop" id="shop">
+  <div class="tools">
+    <div class="chips" id="chips" role="group" aria-label="Filter op categorie"></div>
+    <input id="q" type="search" placeholder="Zoek op naam" aria-label="Zoeken" style="width:200px">
+    <label style="margin:0">Sorteren <select id="sort"><option value="n">Nieuw</option><option value="a">Prijs oplopend</option><option value="d">Prijs aflopend</option></select></label>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+<section class="story" id="over">
+  <div><h2>Zware stof</h2><p>Katoen van 280 tot 450 gram per vierkante meter. Het valt strak en blijft zijn vorm houden.</p></div>
+  <div><h2>Eén pasvorm per stuk</h2><p>Geen verwarrende maattabellen. Twijfel je tussen twee maten? Neem de kleinste voor een strakke fit.</p></div>
+  <div><h2>Gratis verzending vanaf €100</h2><p>Binnen Nederland en België besteld voor 15:00, de volgende werkdag in huis. Retour binnen 30 dagen.</p></div>
+</section>
+</main>
+<footer><span>© 2026 SML. Alle rechten voorbehouden.</span><span>Betalen via bankoverschrijving. <button class="chip" id="adm">Beheer</button></span></footer>
+
+<div class="ov" id="ov"></div>
+<aside class="panel" id="cart" aria-label="Winkelmand" aria-hidden="true">
+  <div class="ph"><h2 id="cTitle">Winkelmand</h2><button class="x" data-close aria-label="Sluiten">×</button></div>
+  <div class="pb" id="cBody"></div>
+  <div class="pf" id="cFoot"></div>
+</aside>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Product"><div class="mbox" id="mbox"></div></div>
+
+<script src="js/products.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
